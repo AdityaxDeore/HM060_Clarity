@@ -1,145 +1,140 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import {
-  BrainCircuit,
   LayoutDashboard,
-  Smile,
-  CircleDollarSign,
-  Repeat,
-  BookText,
-  Sparkles,
-  CalendarCheck,
-  PanelLeft,
-  PanelLeftClose,
+  Wallet,
+  ListChecks,
+  BookOpen,
+  Lightbulb,
   Settings,
-  User,
-  LogOut
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+  LogOut,
+  Menu,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
-} from "@/components/ui/sheet";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useUser } from "@/context/user-context";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { AppLogo } from "./app-logo";
+} from '@/components/ui/sheet';
+import { useAuth } from '@/context/auth-context';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { AppLogo } from './app-logo';
+import { motion } from 'framer-motion';
 
 const navItems = [
-  { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
-  { href: "/mood", icon: Smile, label: "Mood" },
-  { href: "/money", icon: CircleDollarSign, label: "Money" },
-  { href: "/habits", icon: Repeat, label: "Habits" },
-  { href: "/journal", icon: BookText, label: "Journal" },
-  { href: "/insights", icon: Sparkles, label: "Insights" },
-  { href: "/review", icon: CalendarCheck, label: "Daily Review" },
+  { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { href: '/finance', icon: Wallet, label: 'Finance' },
+  { href: '/habits', icon: ListChecks, label: 'Habits' },
+  { href: '/journal', icon: BookOpen, label: 'Journal' },
+  { href: '/insights', icon: Lightbulb, label: 'Insights' },
+  { href: '/settings', icon: Settings, label: 'Settings' },
 ];
 
 export function MainSidebar() {
-  const { user } = useUser();
+  const { userProfile, signOut } = useAuth();
   const pathname = usePathname();
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push('/auth/signin');
+  };
+
   const navContent = (
     <>
-      <div className="flex-1 overflow-y-auto">
-        <nav className="grid items-start px-4 text-sm font-medium">
-          {navItems.map((item) => (
-            <TooltipProvider key={item.label}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-primary/5",
-                      pathname.startsWith(item.href) && "bg-primary/10 text-primary font-medium shadow-sm",
-                      isCollapsed && "justify-center"
-                    )}
-                  >
-                    <item.icon className="h-4 w-4" />
-                    {!isCollapsed && item.label}
-                  </Link>
-                </TooltipTrigger>
-                {isCollapsed && (
-                  <TooltipContent side="right">
-                    <p>{item.label}</p>
-                  </TooltipContent>
+      <nav className="flex-1 space-y-1 px-2 py-4">
+        {navItems.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <motion.div
+              key={item.label}
+              whileHover={{ x: 4 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Link
+                href={item.href}
+                className={cn(
+                  'flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
+                  isActive
+                    ? 'bg-primary text-primary-foreground shadow-md'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                 )}
-              </Tooltip>
-            </TooltipProvider>
-          ))}
-        </nav>
-      </div>
-      {!isCollapsed && (
-        <div className="mt-auto p-4 border-t border-border/40 backdrop-blur-sm">
-            <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-primary/5 transition-colors">
-              <Avatar className="h-10 w-10 border-2 border-primary/20">
-                <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${user?.name}&backgroundColor=e0e0e0&textColor=ffffff`} />
-                <AvatarFallback className="bg-primary/10 text-primary font-semibold">{user?.name?.charAt(0).toUpperCase() ?? 'U'}</AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col">
-                <span className="font-semibold text-sm">{user?.name ?? 'User'}</span>
-                <span className="text-xs text-muted-foreground truncate max-w-[140px]">{user?.mainGoal ? `${user.mainGoal.substring(0,20)}...`: 'Set your goal'}</span>
-              </div>
-            </div>
+              >
+                <item.icon className="h-5 w-5 flex-shrink-0" />
+                <span>{item.label}</span>
+                {isActive && (
+                  <motion.div
+                    layoutId="activeIndicator"
+                    className="ml-auto h-2 w-2 rounded-full bg-primary-foreground"
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  />
+                )}
+              </Link>
+            </motion.div>
+          );
+        })}
+      </nav>
+
+      <div className="border-t border-border p-4 space-y-4">
+        <div className="flex items-center gap-3">
+          <Avatar className="h-10 w-10">
+            <AvatarImage
+              src={`https://avatar.vercel.sh/${userProfile?.email}`}
+              alt={userProfile?.displayName}
+            />
+            <AvatarFallback>
+              {userProfile?.displayName?.charAt(0).toUpperCase() || 'U'}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col flex-1 min-w-0">
+            <p className="text-sm font-semibold truncate">
+              {userProfile?.displayName}
+            </p>
+            <p className="text-xs text-muted-foreground truncate">
+              {userProfile?.email}
+            </p>
+          </div>
         </div>
-      )}
+        <Button
+          onClick={handleSignOut}
+          variant="outline"
+          className="w-full justify-start"
+          size="sm"
+        >
+          <LogOut className="h-4 w-4 mr-2" />
+          Sign Out
+        </Button>
+      </div>
     </>
   );
 
   return (
     <>
-      <aside className={cn(
-        "hidden border-r bg-gradient-to-b from-background via-muted/20 to-background md:flex md:flex-col transition-all duration-300 backdrop-blur-sm",
-        isCollapsed ? "w-16" : "w-64"
-      )}>
-        <div className="flex h-16 items-center border-b border-border/40 px-6 justify-between backdrop-blur-sm">
-          {!isCollapsed && <AppLogo />}
-          <Button
-            size="icon"
-            variant="ghost"
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className={cn(
-              "hover:bg-primary/10 transition-colors",
-              isCollapsed && "mx-auto"
-            )}
-          >
-            {isCollapsed ? <PanelLeft className="h-5 w-5" /> : <PanelLeftClose className="h-5 w-5" />}
-          </Button>
+      {/* Desktop Sidebar */}
+      <aside className="hidden md:flex md:flex-col w-64 border-r border-border bg-card h-screen">
+        <div className="flex h-16 items-center border-b border-border px-6">
+          <AppLogo />
         </div>
         {navContent}
       </aside>
-      <header className="flex h-14 items-center gap-4 border-b bg-gradient-to-r from-background via-muted/20 to-background backdrop-blur-sm px-6 md:hidden">
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button size="icon" variant="outline" className="hover:bg-primary/10">
-              <PanelLeft className="h-5 w-5" />
-              <span className="sr-only">Toggle navigation menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="flex flex-col p-0 bg-gradient-to-b from-background via-muted/20 to-background">
-             <div className="flex h-16 items-center border-b px-6">
-               <AppLogo />
-            </div>
-            {navContent}
-          </SheetContent>
-        </Sheet>
-        <div className="flex-1">
-          <h1 className="font-headline text-xl font-semibold">
-            {navItems.find(item => pathname.startsWith(item.href))?.label}
-          </h1>
-        </div>
-      </header>
+
+      {/* Mobile Navigation */}
+      <Sheet>
+        <SheetTrigger asChild className="md:hidden fixed top-4 left-4 z-40">
+          <Button size="icon" variant="outline">
+            <Menu className="h-5 w-5" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-64 p-0 flex flex-col">
+          <div className="flex h-16 items-center border-b border-border px-6">
+            <AppLogo />
+          </div>
+          {navContent}
+        </SheetContent>
+      </Sheet>
     </>
   );
 }

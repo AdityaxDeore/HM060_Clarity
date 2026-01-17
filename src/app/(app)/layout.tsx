@@ -1,40 +1,55 @@
-"use client";
+'use client';
 
-import { useEffect } from 'react';
+import { useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { useOnboarding } from '@/hooks/use-onboarding';
+import { useAuth } from '@/context/auth-context';
 import { MainSidebar } from '@/components/main-sidebar';
-import { GridBackground } from '@/components/dashboard/grid-background';
+import { motion } from 'framer-motion';
 
-export default function AppLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { isOnboarded } = useOnboarding();
+export default function AppLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
+  const { user, loading } = useAuth();
 
   useEffect(() => {
-    if (isOnboarded === false) {
-      router.replace('/onboarding');
+    if (!loading && !user) {
+      router.push('/auth/signin');
     }
-  }, [isOnboarded, router]);
+  }, [user, loading, router]);
 
-  if (isOnboarded === undefined || !isOnboarded) {
+  if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      <div className="flex h-screen items-center justify-center bg-background">
+        <motion.div
+          animate={{ opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="text-muted-foreground"
+        >
+          Loading...
+        </motion.div>
       </div>
     );
   }
 
+  if (!user) {
+    return null;
+  }
+
   return (
-    <div className="flex min-h-screen w-full">
-      <GridBackground />
+    <div className="flex h-screen bg-background">
+      {/* Sidebar */}
       <MainSidebar />
-      <div className="flex flex-col flex-1">
-        {children}
-      </div>
+
+      {/* Main content */}
+      <main className="flex-1 overflow-y-auto">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          {children}
+        </motion.div>
+      </main>
     </div>
   );
 }
