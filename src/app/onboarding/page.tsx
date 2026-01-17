@@ -1,54 +1,64 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+<<<<<<< Updated upstream
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { GrainGradient, grainGradientPresets } from '@paper-design/shaders-react';
+=======
+import { useAuth } from '@/context/auth-context';
+import { motion } from 'framer-motion';
+>>>>>>> Stashed changes
 import { AppLogo } from '@/components/app-logo';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Progress } from '@/components/ui/progress';
-import { useUser } from '@/context/user-context';
-import { useOnboarding } from '@/hooks/use-onboarding';
-import { AnimatePresence, motion } from 'framer-motion';
-
-const formSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters."),
-  age: z.coerce.number().min(13, "You must be at least 13 years old."),
-  mainGoal: z.string().min(10, "Please describe your goal in a bit more detail."),
-  biggestStruggle: z.string().min(10, "Please describe your struggle in a bit more detail."),
-});
-
-type OnboardingFormValues = z.infer<typeof formSchema>;
-
-const steps = [
-  { id: 'step1', title: 'About You', fields: ['name', 'age'] },
-  { id: 'step2', title: 'Your North Star', fields: ['mainGoal'] },
-  { id: 'step3', title: 'Your Current Challenge', fields: ['biggestStruggle'] },
-];
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { setUser } = useUser();
-  const { isOnboarded, completeOnboarding } = useOnboarding();
-  const [currentStep, setCurrentStep] = useState(0);
+  const { user } = useAuth();
 
   useEffect(() => {
-    if (isOnboarded) {
-      router.replace('/dashboard');
+    if (user) {
+      // Skip onboarding for now, redirect to dashboard
+      router.push('/dashboard');
     }
-  }, [isOnboarded, router]);
+  }, [user, router]);
 
+<<<<<<< Updated upstream
   const form = useForm<OnboardingFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
       age: '' as any,
+=======
+  return (
+    <div className="flex flex-col min-h-screen items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
+      {/* Animated background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-pulse"></div>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6 }}
+        className="relative flex flex-col items-center gap-4"
+      >
+        <AppLogo />
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-muted-foreground text-sm"
+        >
+          Setting up your experience...
+        </motion.p>
+      </motion.div>
+    </div>
+  );
+}
+>>>>>>> Stashed changes
       mainGoal: '',
       biggestStruggle: '',
     },
