@@ -63,7 +63,7 @@ export default function InsightsPage() {
       {isLoading && (
          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {[...Array(3)].map((_, i) => (
-              <Card key={i}>
+              <Card key={i} className="bg-card/40 backdrop-blur-sm border-border/40">
                 <CardHeader>
                   <Skeleton className="h-5 w-3/4" />
                 </CardHeader>
@@ -79,7 +79,7 @@ export default function InsightsPage() {
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {insights.map((insight, index) => (
-          <Card key={index} className="flex flex-col">
+          <Card key={index} className="flex flex-col bg-card/40 backdrop-blur-sm border-border/40">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Lightbulb className="text-primary"/>

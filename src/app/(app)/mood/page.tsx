@@ -58,7 +58,7 @@ export default function MoodPage() {
         <p className="text-muted-foreground">Track your emotional landscape.</p>
       </header>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="lg:col-span-1">
+        <Card className="lg:col-span-1 bg-card/40 backdrop-blur-sm border-border/40">
           <CardHeader>
             <CardTitle className="font-headline">How are you feeling today?</CardTitle>
           </CardHeader>
@@ -85,7 +85,7 @@ export default function MoodPage() {
           </CardContent>
         </Card>
 
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-2 bg-card/40 backdrop-blur-sm border-border/40">
             <CardHeader>
                 <CardTitle className="font-headline">Mood Calendar</CardTitle>
                 <CardDescription>Select a date to see your mood entry.</CardDescription>

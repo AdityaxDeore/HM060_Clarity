@@ -9,7 +9,7 @@ export function DecisionList() {
   const { decisions } = useJournal();
 
   return (
-    <Card>
+    <Card className="bg-card/40 backdrop-blur-sm border-border/40">
       <CardHeader>
         <CardTitle className="font-headline">Decision History</CardTitle>
         <CardDescription>A log of your past choices and reflections.</CardDescription>

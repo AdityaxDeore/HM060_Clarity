@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useOnboarding } from '@/hooks/use-onboarding';
 import { MainSidebar } from '@/components/main-sidebar';
+import { GridBackground } from '@/components/dashboard/grid-background';
 
 export default function AppLayout({
   children,
@@ -29,6 +30,7 @@ export default function AppLayout({
 
   return (
     <div className="flex min-h-screen w-full">
+      <GridBackground />
       <MainSidebar />
       <div className="flex flex-col flex-1">
         {children}

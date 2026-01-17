@@ -36,24 +36,24 @@ export function FinancialOverview() {
   }, [transactions]);
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      <Card>
+    <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
+      <Card className="bg-card/40 backdrop-blur-sm border-border/40">
         <CardHeader>
           <CardTitle>Income</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-4xl font-bold text-green-500">${income.toFixed(2)}</div>
+          <p className="text-3xl font-bold text-green-600">${income.toFixed(2)}</p>
         </CardContent>
       </Card>
-      <Card>
+      <Card className="bg-card/40 backdrop-blur-sm border-border/40">
         <CardHeader>
           <CardTitle>Expenses</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-4xl font-bold text-red-500">${expenses.toFixed(2)}</div>
+          <p className="text-3xl font-bold text-red-600">${expenses.toFixed(2)}</p>
         </CardContent>
       </Card>
-      <Card>
+      <Card className="bg-card/40 backdrop-blur-sm border-border/40">
         <CardHeader>
           <CardTitle>Balance</CardTitle>
         </CardHeader>
@@ -63,7 +63,7 @@ export function FinancialOverview() {
           </div>
         </CardContent>
       </Card>
-      <Card className="md:col-span-2 lg:col-span-1">
+      <Card className="md:col-span-2 lg:col-span-1 bg-card/40 backdrop-blur-sm border-border/40">
         <CardHeader>
           <CardTitle className="font-headline">Expense Breakdown</CardTitle>
         </CardHeader>
@@ -92,7 +92,7 @@ export function FinancialOverview() {
           </div>
         </CardContent>
       </Card>
-      <Card className="md:col-span-2 lg:col-span-2">
+      <Card className="md:col-span-2 lg:col-span-2 bg-card/40 backdrop-blur-sm border-border/40">
         <CardHeader>
             <CardTitle className="font-headline">Recent Transactions</CardTitle>
         </CardHeader>

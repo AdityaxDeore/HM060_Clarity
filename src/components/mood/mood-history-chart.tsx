@@ -32,7 +32,7 @@ export function MoodHistoryChart() {
   }, [moods]);
 
   return (
-    <Card>
+    <Card className="bg-card/40 backdrop-blur-sm border-border/40">
       <CardHeader>
         <CardTitle className="font-headline">Mood Fluctuation</CardTitle>
         <CardDescription>Your mood trend over the last entries.</CardDescription>

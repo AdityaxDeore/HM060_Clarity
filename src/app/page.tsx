@@ -1,32 +1,82 @@
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { AppLogo } from '@/components/app-logo';
+"use client";
 
-export default function LoginPage() {
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { GrainGradient, grainGradientPresets } from '@paper-design/shaders-react';
+import { Button } from '@/components/ui/button';
+
+interface GrainHeroSectionProps {
+  title: string;
+  subtitle: string;
+  ctaLabel: string;
+  onCtaClick: () => void;
+  isLoading?: boolean;
+}
+
+function GrainHeroSection({
+  title,
+  subtitle,
+  ctaLabel,
+  onCtaClick,
+  isLoading,
+}: GrainHeroSectionProps) {
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center bg-background p-4">
-      <div className="absolute top-8 left-8">
-        <AppLogo />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <div data-darkreader-ignore>
+        <GrainGradient
+          {...grainGradientPresets[0]}
+          style={{ position: "fixed", inset: 0, zIndex: -10 }}
+        />
       </div>
-      <div className="w-full max-w-md text-center">
-        <div className="relative mb-8">
-          <div className="absolute -inset-2">
-            <div className="w-full h-full max-w-full mx-auto rotate-180 bg-[conic-gradient(from_90deg_at_50%_50%,#3F51B5_0%,#673AB7_50%,#3F51B5_100%)] opacity-20 blur-3xl"></div>
-          </div>
-          <h1 className="relative font-headline text-5xl md:text-6xl font-bold text-foreground">
-            Welcome to <span className="text-primary">NeuroFlow</span>
-          </h1>
-        </div>
-        <p className="mt-4 mb-8 text-lg text-muted-foreground text-balance">
-          Your cognitive operating system for a more intentional life.
+      
+      <div className="text-center px-6 sm:px-8 max-w-4xl mx-auto">
+        <h1 
+          role="heading" 
+          className="text-4xl sm:text-6xl font-bold text-white mb-6"
+        >
+          {title}
+        </h1>
+        
+        <p className="max-w-2xl text-lg sm:text-xl text-gray-200 mx-auto mb-8">
+          {subtitle}
         </p>
-        <Button asChild size="lg" className="font-bold text-lg">
-          <Link href="/onboarding">Begin Your Journey</Link>
+        
+        <Button 
+          onClick={onCtaClick}
+          size="lg"
+          className="text-lg px-8 py-3 bg-white text-black hover:bg-gray-100"
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <>
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-black border-t-transparent mr-2" />
+              Loading...
+            </>
+          ) : (
+            ctaLabel
+          )}
         </Button>
       </div>
-      <footer className="absolute bottom-4 text-center text-sm text-muted-foreground">
-        <p>&copy; {new Date().getFullYear()} NeuroFlow. All rights reserved.</p>
-      </footer>
-    </div>
+    </section>
+  );
+}
+
+export default function LoginPage() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleNavigation = () => {
+    setIsLoading(true);
+    router.push('/onboarding');
+  };
+
+  return (
+    <GrainHeroSection
+      title="Welcome to NeuroFlow"
+      subtitle="Your cognitive operating system for a more intentional life."
+      ctaLabel="Begin Your Journey"
+      onCtaClick={handleNavigation}
+      isLoading={isLoading}
+    />
   );
 }

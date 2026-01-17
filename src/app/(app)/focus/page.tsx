@@ -44,7 +44,7 @@ export default function FocusPage() {
       </div>
 
       <div className="w-full max-w-2xl space-y-8">
-        <Card>
+        <Card className="bg-card/40 backdrop-blur-sm border-border/40">
             <CardHeader>
                 <CardTitle>Score Contribution</CardTitle>
                 <CardDescription>How each area of your life impacts your focus.</CardDescription>
@@ -67,14 +67,14 @@ export default function FocusPage() {
             </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-card/40 backdrop-blur-sm border-border/40">
             <CardHeader>
                 <CardTitle>Improvement Tips</CardTitle>
                 <CardDescription>Actionable advice to boost your focus score.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {tips.map((tip, index) => (
-                <div key={index} className="p-4 bg-muted rounded-lg">
+                <div key={index} className="p-4 bg-muted/40 backdrop-blur-sm rounded-lg border border-border/40">
                   <h4 className="font-semibold">{tip.title}</h4>
                   <p className="text-sm text-muted-foreground">{tip.description}</p>
                 </div>

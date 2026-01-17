@@ -22,7 +22,7 @@ export function HabitList() {
         <Card
           key={habit.id}
           className={cn(
-            "p-4 transition-all",
+            "p-4 transition-all bg-card/40 backdrop-blur-sm border-border/40",
             habit.completedToday ? 'bg-primary/10 border-primary' : ''
           )}
         >

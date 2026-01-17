@@ -78,15 +78,15 @@ export default function DailyReviewPage() {
       
       {!isLoading && !error && (
         <div className="grid gap-6 md:grid-cols-2">
-          <Card>
+          <Card className="bg-card/40 backdrop-blur-sm border-border/40">
             <CardHeader>
               <CardTitle className="font-headline">Today's Summary</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="whitespace-pre-wrap">{summary || "Click 'Regenerate' to get your daily summary."}</p>
+              <p className="whitespace-pre-wrap">{summary || "Loading summary..."}</p>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="bg-card/40 backdrop-blur-sm border-border/40">
             <CardHeader>
               <CardTitle className="font-headline">Personalized Suggestions</CardTitle>
             </CardHeader>

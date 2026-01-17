@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { GrainGradient, grainGradientPresets } from '@paper-design/shaders-react';
 import { AppLogo } from '@/components/app-logo';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -47,7 +48,7 @@ export default function OnboardingPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
-      age: undefined,
+      age: '' as any,
       mainGoal: '',
       biggestStruggle: '',
     },
@@ -80,18 +81,30 @@ export default function OnboardingPage() {
 
   if (isOnboarded === undefined || isOnboarded) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      <div className="flex h-screen items-center justify-center relative">
+        <div data-darkreader-ignore>
+          <GrainGradient
+            {...grainGradientPresets[0]}
+            style={{ position: "fixed", inset: 0, zIndex: -10 }}
+          />
+        </div>
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-white border-t-transparent" />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-4">
+    <div className="flex min-h-screen flex-col items-center justify-center p-4 relative">
+      <div data-darkreader-ignore>
+        <GrainGradient
+          {...grainGradientPresets[0]}
+          style={{ position: "fixed", inset: 0, zIndex: -10 }}
+        />
+      </div>
       <div className="absolute top-8">
         <AppLogo />
       </div>
-      <Card className="w-full max-w-lg shadow-2xl">
+      <Card className="w-full max-w-lg shadow-2xl bg-white/95 backdrop-blur-sm">
         <CardHeader>
           <Progress value={((currentStep + 1) / steps.length) * 100} className="mb-4" />
           <CardTitle className="font-headline text-2xl">{steps[currentStep].title}</CardTitle>
