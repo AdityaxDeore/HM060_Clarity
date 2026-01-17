@@ -1,0 +1,41 @@
+"use client";
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useOnboarding } from '@/hooks/use-onboarding';
+import { AppContextProvider } from '@/context/app-context';
+import { MainSidebar } from '@/components/main-sidebar';
+
+export default function AppLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { isOnboarded } = useOnboarding();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isOnboarded === false) {
+      router.replace('/onboarding');
+    }
+  }, [isOnboarded, router]);
+
+  if (isOnboarded === undefined) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+
+  return (
+    <AppContextProvider>
+      <div className="flex min-h-screen w-full">
+        <MainSidebar />
+        <div className="flex flex-col flex-1">
+          {children}
+        </div>
+      </div>
+    </AppContextProvider>
+  );
+}
