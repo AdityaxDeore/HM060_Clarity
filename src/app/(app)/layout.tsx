@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useOnboarding } from '@/hooks/use-onboarding';
-import { AppContextProvider } from '@/context/app-context';
 import { MainSidebar } from '@/components/main-sidebar';
 
 export default function AppLayout({
@@ -29,13 +28,11 @@ export default function AppLayout({
   }
 
   return (
-    <AppContextProvider>
-      <div className="flex min-h-screen w-full">
-        <MainSidebar />
-        <div className="flex flex-col flex-1">
-          {children}
-        </div>
+    <div className="flex min-h-screen w-full">
+      <MainSidebar />
+      <div className="flex flex-col flex-1">
+        {children}
       </div>
-    </AppContextProvider>
+    </div>
   );
 }

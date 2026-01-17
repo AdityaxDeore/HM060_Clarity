@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -34,8 +34,14 @@ const steps = [
 export default function OnboardingPage() {
   const router = useRouter();
   const { setUser } = useUser();
-  const { completeOnboarding } = useOnboarding();
+  const { isOnboarded, completeOnboarding } = useOnboarding();
   const [currentStep, setCurrentStep] = useState(0);
+
+  useEffect(() => {
+    if (isOnboarded) {
+      router.replace('/dashboard');
+    }
+  }, [isOnboarded, router]);
 
   const form = useForm<OnboardingFormValues>({
     resolver: zodResolver(formSchema),
@@ -71,6 +77,14 @@ export default function OnboardingPage() {
       setCurrentStep(step => step - 1);
     }
   };
+
+  if (isOnboarded === undefined || isOnboarded) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
