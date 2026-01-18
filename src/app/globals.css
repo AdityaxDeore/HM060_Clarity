@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 6% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 6% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 6% 10%;
+    --primary: 252 53% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 6% 10%;
+    --muted: 240 5% 90%;
+    --muted-foreground: 240 4% 46%;
+    --accent: 231 48% 48%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 252 53% 53%;
+    --chart-1: 252 53% 53%;
+    --chart-2: 231 48% 48%;
+    --chart-3: 300 50% 55%;
+    --chart-4: 280 55% 60%;
+    --chart-5: 260 60% 65%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 240 6% 10%;
+    --foreground: 0 0% 98%;
+    --card: 240 5% 12%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 6% 10%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 252 53% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 4% 16%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 4% 20%;
+    --muted-foreground: 240 4% 65%;
+    --accent: 231 48% 48%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 4% 25%;
+    --input: 240 4% 25%;
+    --ring: 252 53% 53%;
+    --chart-1: 252 53% 53%;
+    --chart-2: 231 48% 48%;
+    --chart-3: 300 50% 55%;
+    --chart-4: 280 55% 60%;
+    --chart-5: 260 60% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    position: relative;
+  }
+  
+  /* Subtle animated gradient background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background: linear-gradient(
+      135deg,
+      rgba(139, 92, 246, 0.03) 0%,
+      rgba(59, 130, 246, 0.03) 25%,
+      rgba(16, 185, 129, 0.03) 50%,
+      rgba(236, 72, 153, 0.03) 75%,
+      rgba(139, 92, 246, 0.03) 100%
+    );
+    background-size: 400% 400%;
+    animation: gradientShift 20s ease infinite;
+  }
+  
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background-image: radial-gradient(hsl(var(--border)) 0.5px, transparent 0);
+    background-size: 20px 20px;
+    opacity: 0.3;
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

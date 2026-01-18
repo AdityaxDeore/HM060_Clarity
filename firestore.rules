@@ -1,0 +1,44 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // User profile doc scoped by UID
+    match /users/{userId} {
+      allow read, write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Journals: top-level collection with `uid` field
+    match /journals/{journalId} {
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow create, update, delete: if isSignedIn() && request.resource.data.uid == request.auth.uid;
+    }
+
+    // Habits: top-level collection with `uid` field
+    match /habits/{habitId} {
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow create, update, delete: if isSignedIn() && request.resource.data.uid == request.auth.uid;
+    }
+
+    // Habit logs: top-level collection with `uid` field
+    match /habitLogs/{logId} {
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow create, update, delete: if isSignedIn() && request.resource.data.uid == request.auth.uid;
+    }
+
+    // Mood logs: top-level collection with `uid` field
+    match /moodLogs/{moodLogId} {
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow create, update, delete: if isSignedIn() && request.resource.data.uid == request.auth.uid;
+    }
+
+    // Finances/transactions: top-level collection with `uid` field
+    match /finances/{transactionId} {
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow create, update, delete: if isSignedIn() && request.resource.data.uid == request.auth.uid;
+    }
+  }
+}
