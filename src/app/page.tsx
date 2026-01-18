@@ -67,7 +67,7 @@ export default function LoginPage() {
 
   const handleNavigation = () => {
     setIsLoading(true);
-    router.push('/auth/signin');
+    router.push('/onboarding');
   };
 
   return (
@@ -80,4 +80,3 @@ export default function LoginPage() {
     />
   );
 }
-

@@ -64,54 +64,9 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
-    position: relative;
-  }
-  
-  /* Subtle animated gradient background */
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
-    background: linear-gradient(
-      135deg,
-      rgba(139, 92, 246, 0.03) 0%,
-      rgba(59, 130, 246, 0.03) 25%,
-      rgba(16, 185, 129, 0.03) 50%,
-      rgba(236, 72, 153, 0.03) 75%,
-      rgba(139, 92, 246, 0.03) 100%
-    );
-    background-size: 400% 400%;
-    animation: gradientShift 20s ease infinite;
-  }
-  
-  body::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
     background-image: radial-gradient(hsl(var(--border)) 0.5px, transparent 0);
     background-size: 20px 20px;
-    opacity: 0.3;
-  }
-}
-
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 

@@ -1,24 +1,52 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { Card } from '@/components/ui/card';
-import { AlertCircle, TrendingUp, Lightbulb, Target } from 'lucide-react';
-
-const insights = [
-  { type: 'correlation', title: 'Spending & Mood Link', description: 'Your spending increases by 40% on days with low mood scores', severity: 'warning', icon: AlertCircle },
-  { type: 'pattern', title: 'Habit Consistency', description: 'You complete 85% more habits on weekdays than weekends', severity: 'info', icon: Target },
-  { type: 'prediction', title: 'Energy Trend', description: 'Your energy levels peak at 2 PM. Schedule important tasks accordingly', severity: 'info', icon: TrendingUp },
-];
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { useJournal } from '@/context/journal-context';
+import { getDecisionJournalInsights } from '@/ai/flows/decision-journal-insights';
+import type { Insight } from '@/lib/types';
+import { Sparkles, Lightbulb } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function InsightsPage() {
-  return (
-    <div className="flex-1 space-y-6 p-6 lg:p-8 overflow-y-auto">
-      <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-4xl font-bold text-foreground">Insights</h1>
-        <p className="text-muted-foreground">Silent intelligence discovering patterns</p>
-      </motion.div>
+  const { decisions } = useJournal();
+  const [insights, setInsights] = useState<Insight[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-<<<<<<< Updated upstream
+  const handleGenerateInsights = async () => {
+    setIsLoading(true);
+    setError(null);
+    setInsights([]);
+
+    try {
+      const input = {
+        entries: decisions.map(({ decision, reason, feeling }) => ({ decision, reason, feeling })),
+      };
+      const result = await getDecisionJournalInsights(input);
+      setInsights(result.insights);
+    } catch (e) {
+      setError("Failed to generate insights. Please try again later.");
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <main className="flex-1 flex flex-col p-4 md:p-6 gap-6">
+      <header className="flex justify-between items-center">
+        <div>
+          <h1 className="font-headline text-3xl font-bold">AI Insights Engine</h1>
+          <p className="text-muted-foreground">Discover hidden patterns in your decision-making.</p>
+        </div>
+        <Button onClick={handleGenerateInsights} disabled={isLoading || decisions.length < 2}>
+          {isLoading ? 'Analyzing...' : 'Generate Insights'}
+          <Sparkles className="ml-2 h-4 w-4" />
+        </Button>
+      </header>
+
       {error && <p className="text-destructive">{error}</p>}
       
       {insights.length === 0 && !isLoading && (
@@ -70,26 +98,7 @@ export default function InsightsPage() {
             </CardContent>
           </Card>
         ))}
-=======
-      <div className="space-y-4">
-        {insights.map((insight, i) => {
-          const Icon = insight.icon;
-          return (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}>
-              <Card className={`p-6 border-l-4 ${insight.severity === 'warning' ? 'border-amber-500' : 'border-blue-500'}`}>
-                <div className="flex items-start gap-4">
-                  <Icon className={`h-6 w-6 flex-shrink-0 ${insight.severity === 'warning' ? 'text-amber-500' : 'text-blue-500'}`} />
-                  <div>
-                    <h3 className="text-lg font-semibold text-foreground mb-1">{insight.title}</h3>
-                    <p className="text-muted-foreground">{insight.description}</p>
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
-          );
-        })}
->>>>>>> Stashed changes
       </div>
-    </div>
+    </main>
   );
 }
