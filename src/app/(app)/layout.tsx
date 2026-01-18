@@ -1,55 +1,40 @@
-'use client';
+"use client";
 
-import { useEffect, ReactNode } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/auth-context';
+import { useOnboarding } from '@/hooks/use-onboarding';
 import { MainSidebar } from '@/components/main-sidebar';
-import { motion } from 'framer-motion';
+import { GridBackground } from '@/components/dashboard/grid-background';
 
-export default function AppLayout({ children }: { children: ReactNode }) {
+export default function AppLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { isOnboarded } = useOnboarding();
   const router = useRouter();
-  const { user, loading } = useAuth();
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/auth/signin');
+    if (isOnboarded === false) {
+      router.replace('/onboarding');
     }
-  }, [user, loading, router]);
+  }, [isOnboarded, router]);
 
-  if (loading) {
+  if (isOnboarded === undefined || !isOnboarded) {
     return (
-      <div className="flex h-screen items-center justify-center bg-background">
-        <motion.div
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="text-muted-foreground"
-        >
-          Loading...
-        </motion.div>
+      <div className="flex h-screen items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </div>
     );
   }
 
-  if (!user) {
-    return null;
-  }
-
   return (
-    <div className="flex h-screen bg-background">
-      {/* Sidebar */}
+    <div className="flex min-h-screen w-full">
+      <GridBackground />
       <MainSidebar />
-
-      {/* Main content */}
-      <main className="flex-1 overflow-y-auto">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          {children}
-        </motion.div>
-      </main>
+      <div className="flex flex-col flex-1">
+        {children}
+      </div>
     </div>
   );
 }
