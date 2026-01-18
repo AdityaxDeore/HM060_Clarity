@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   BrainCircuit,
   LayoutDashboard,
@@ -48,7 +48,15 @@ const navItems = [
 export function MainSidebar() {
   const { user } = useUser();
   const pathname = usePathname();
+  const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  
+  // Prefetch all routes on mount for instant navigation
+  useEffect(() => {
+    navItems.forEach(item => {
+      router.prefetch(item.href);
+    });
+  }, [router]);
   
   const navContent = (
     <>
@@ -60,6 +68,7 @@ export function MainSidebar() {
                 <TooltipTrigger asChild>
                   <Link
                     href={item.href}
+                    prefetch={true}
                     className={cn(
                       "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-primary/5",
                       pathname.startsWith(item.href) && "bg-primary/10 text-primary font-medium shadow-sm",

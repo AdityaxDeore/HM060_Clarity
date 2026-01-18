@@ -34,10 +34,10 @@ export default function DashboardPage() {
           <FocusRing />
         </Link>
         
-        <NodeButton href="/mood" icon={Smile} label="Mood" className="absolute top-[20%] left-[20%] -translate-x-1/2 -translate-y-1/2" />
-        <NodeButton href="/money" icon={CircleDollarSign} label="Money" className="absolute top-[20%] left-[80%] -translate-x-1/2 -translate-y-1/2" />
-        <NodeButton href="/habits" icon={Repeat} label="Habits" className="absolute top-[80%] left-[20%] -translate-x-1/2 -translate-y-1/2" />
-        <NodeButton href="/journal" icon={BookText} label="Thoughts" className="absolute top-[80%] left-[80%] -translate-x-1/2 -translate-y-1/2" />
+        <NodeButton href="/mood" icon={Smile} label="Mood" className="absolute top-[20%] left-[20%] -translate-x-1/2 -translate-y-1/2" color="purple" />
+        <NodeButton href="/money" icon={CircleDollarSign} label="Money" className="absolute top-[20%] left-[80%] -translate-x-1/2 -translate-y-1/2" color="emerald" />
+        <NodeButton href="/habits" icon={Repeat} label="Habits" className="absolute top-[80%] left-[20%] -translate-x-1/2 -translate-y-1/2" color="orange" />
+        <NodeButton href="/journal" icon={BookText} label="Thoughts" className="absolute top-[80%] left-[80%] -translate-x-1/2 -translate-y-1/2" color="cyan" />
       </div>
 
       <div className="mt-6 text-center">
